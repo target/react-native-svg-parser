@@ -38,116 +38,137 @@ const mapping = {
   'stop': Stop
 }
 
-function iterateMarkup (markup, config, i = 0) {
-  if (!markup || !markup.nodeName) {
-    return null
-  }
-  let tagName = markup.nodeName
+function extractViewbox (markup) {
+  const viewBox = markup.attributes
+    ? Object.values(markup.attributes)
+      .filter((attr) => attr.name === 'viewBox')[0]
+  : false
 
-  if (!markup.tagName) {
-    return null
+  const vbSplits = viewBox ? viewBox.value.split(' ') : false
+  if (!vbSplits) {
+    return {}
   }
 
+  return {
+    width: `${vbSplits[2]}`,
+    height: `${vbSplits[3]}`,
+    viewBox: viewBox.value
+  }
+}
+
+function getCssRulesForAttr (attr, cssRules) {
+  let rules = []
+  if (attr.name === 'id') {
+    const idname = '#' + attr.value
+
+    rules = cssRules.filter((rule) => {
+      if (rule.selectors.indexOf(idname) > -1) {
+        return true
+      } else {
+        return false
+      }
+    })
+  } else if (attr.name === 'class') {
+    const className = '.' + attr.value
+    rules = cssRules.filter((rule) => {
+      if (rule.selectors.indexOf(className) > -1) {
+        return true
+      } else {
+        return false
+      }
+    })
+  }
+
+  return rules
+}
+
+function addNonCssAttributes (markup, cssPropsResult) {
+  // again look at the attributes and pick up anything else that is not related to CSS
   const attrs = []
+  Object.values(markup.attributes).forEach((attr) => {
+    if (!attr || !attr.name) {
+      return
+    }
 
-  if (tagName === 'svg') {
-    let viewBox = markup.attributes
-                    ? Object.values(markup.attributes)
-                      .filter((attr) => attr.name === 'viewBox')[0]
-                  : false
-    viewBox = viewBox ? viewBox.value.split(' ') : false
+    const propertyName = camelCase(attr.name)
+    if (propertyName === 'class' || propertyName === 'id') {
+      return
+    }
+
+    if (cssPropsResult.cssProps.indexOf(propertyName) > -1) {
+      return
+    }
 
     attrs.push({
+      name: propertyName,
+      value: `${attr.value}`
+    })
+  })
+
+  return attrs
+}
+
+function findApplicableCssProps (markup, config) {
+  const cssProps = []
+  const attrs = []
+  Object.values(markup.attributes).forEach((attr) => {
+    const rules = getCssRulesForAttr(attr, config.cssRules)
+    if (rules.length === 0) {
+      return
+    }
+
+    rules.forEach((rule) => {
+      rule.declarations.forEach((declaration) => {
+        const propertyName = camelCase(declaration.property)
+        attrs.push({
+          name: propertyName,
+          value: `${declaration.value}`
+        })
+        cssProps.push(propertyName)
+      })
+    })
+  })
+  return { cssProps, attrs }
+}
+
+function traverse (markup, config, i = 0) {
+  if (!markup || !markup.nodeName || !markup.tagName) {
+    return null
+  }
+  const tagName = markup.nodeName
+
+  let attrs = []
+  if (tagName === 'svg') {
+    const viewBox = extractViewbox(markup)
+    attrs.push({
       name: 'width',
-      value: config.width || `${viewBox[2]}`
+      value: config.width || viewBox.width
     })
     attrs.push({
       name: 'height',
-      value: config.height || `${viewBox[3]}`
+      value: config.height || viewBox.height
     })
     attrs.push({
       name: 'viewBox',
-      value: viewBox ? `${viewBox.join(' ')}` : '0 0 50 50'
+      value: config.viewBox || viewBox.viewBox || '0 0 50 50'
     })
   } else {
-    // tagName
-    let cssProps = []
-    let className
-    // Find classes and match attributes from rule declarations
-    Object.values(markup.attributes).forEach((attr) => {
-      let rules = []
-      if (attr.name === 'id') {
-        let idname = '#' + attr.value
-
-        rules = config.cssRules.filter((rule) => {
-          if (rule.selectors.indexOf(idname) > -1) {
-            return true
-          } else {
-            return false
-          }
-        })
-      } else if (attr.name === 'class') {
-        className = '.' + attr.value
-
-        rules = config.cssRules.filter((rule) => {
-          if (rule.selectors.indexOf(className) > -1) {
-            return true
-          } else {
-            return false
-          }
-        })
-      }
-
-      if (rules.length === 0) {
-        return
-      }
-
-      rules.forEach((rule) => {
-        rule.declarations.forEach((declaration) => {
-          const propertyName = camelCase(declaration.property)
-
-          // always react native
-          // Compare against whitelist/proptypes from react-native-svg props in validKeys
-          attrs.push({
-            name: propertyName,
-            value: `${declaration.value}`
-          })
-          cssProps.push(propertyName)
-        })
-      })
-    })
-
-    Object.values(markup.attributes).forEach((attr) => {
-      if (!attr || !attr.name) {
-        return
-      }
-
-      const propertyName = camelCase(attr.name)
-
-      if (propertyName === 'class') {
-        return
-      }
-
-      if (cssProps.indexOf(propertyName) > -1) {
-        return
-      }
-
-      attrs.push({
-        name: propertyName,
-        value: `${attr.value}`
-      })
-    })
+    // otherwise, if not SVG, check to see if there is CSS to apply.
+    const cssPropsResult = findApplicableCssProps(markup, config)
+    const additionalProps = addNonCssAttributes(markup, cssPropsResult)
+    // add to the known list of total attributes.
+    attrs = [...attrs, ...cssPropsResult.attrs, ...additionalProps]
   }
 
   const children = markup.childNodes.length ? Object.values(markup.childNodes).map((child) => {
-    return iterateMarkup(child, config, ++i)
+    return traverse(child, config, ++i)
   }).filter((node) => {
     return !!node
   }) : []
 
   // map the tag to an element.
   const Elem = mapping[ tagName.toLowerCase() ]
-  let elemAttributes = {}
+  const elemAttributes = {}
   attrs.forEach((attr) => {
     elemAttributes[attr.name] = attr.value
   })
@@ -161,9 +182,11 @@ function iterateMarkup (markup, config, i = 0) {
   return <Elem {...elemAttributes} key={k}>{ children }</Elem>
 }
 
+export { extractViewbox, getCssRulesForAttr, findApplicableCssProps, addNonCssAttributes }
+
 export default (dom, cssAst, config) => {
   config = Object.assign({}, config, {
     cssRules: (cssAst && cssAst.stylesheet && cssAst.stylesheet.rules) || []
   })
-  return iterateMarkup(dom.documentElement, config)
+  return traverse(dom.documentElement, config)
 }

@@ -6,10 +6,10 @@
   "scripts": {
     "lint": "standard",
     "lint-fix": "standard --fix",
-    "test": "jest",
-    "build": "babel src --loose --out-dir lib --ignore *.test.js",
-    "prepare": "npm test && npm run lint && npm run build",
-    "install-peers": "npm i react@16.2.0 react-native-svg@5.5.1 react-native@0.50.0"
+    "test": "jest --verbose --coverage",
+    "build": "rm -rf lib && babel src --out-dir lib --ignore *.test.js --source-maps",
+    "ci": "npm test && npm run lint && npm run build",
+    "install-peers": "npm i --no-save react@16.2.0 react-native-svg@6.0.0 react-native@0.50.0"
   },
   "repository": {
     "type": "git",
@@ -19,11 +19,7 @@
   "license": "ISC",
   "dependencies": {
     "camelcase": "^4.1.0",
-    "css-parse": "^2.0.0",
-    "jest-react-native": "^18.0.0",
-    "react": "^16.2.0",
-    "react-native": "^0.51.0",
-    "react-native-svg": "^5.5.1",
+    "css-parse-no-fs": "^2.0.0",
     "xmldom": "^0.1.27"
   },
   "devDependencies": {
@@ -38,7 +34,7 @@
   },
   "peerDependencies": {
     "react": "*",
-    "react-native-svg": "^5.5.1",
+    "react-native-svg": "^6.0.0",
     "react-native": ">=0.50.0"
   },
   "jest": {
@@ -56,5 +52,6 @@
       "es6",
       "react-native"
     ]
-  }
+  },
+  "nativePackage": true
 }

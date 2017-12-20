@@ -1,5 +1,5 @@
 import { DOMParser } from 'xmldom'
-import cssParse from 'css-parse'
+import cssParse from 'css-parse-no-fs'
 import converter from './converter'
 
 /**
@@ -14,8 +14,8 @@ import converter from './converter'
  * This defaults to empty object. Check this link for options you can pass:
  * https://github.com/jindw/xmldom#api-reference
  *
- * @param {*} svgString
- * @param {*} param1
+ * @param String svgString
+ * @param Object param1
  */
 function parseSvg (svgString, opts) {
   const markup = (new DOMParser(opts)).parseFromString(svgString, 'image/svg+xml')
@@ -28,7 +28,7 @@ function parseSvg (svgString, opts) {
  * This is the parse method of this library:
  * https://github.com/reworkcss/css#api
  *
- * @param {*} cssString
+ * @param String cssString
  */
 function makeCssAst (cssString) {
   if (!cssString) {
@@ -41,8 +41,9 @@ function makeCssAst (cssString) {
  *
  * Returns SVG object from a dom + config params
  *
- * @param {*} svgDom
- * @param {*} config
+ * @param Element svgDom
+ * @param CssAst cssAst
+ * @param Object config
  */
 function convertSvg (svgDom, cssAst, config) {
   return converter(svgDom, cssAst, config)
@@ -55,8 +56,8 @@ export { parseSvg, makeCssAst, convertSvg }
  *
  * config should include width, height, and css, as an optional param which is a CSS stylesheet as a string.
  *
- * @param {*} svgString
- * @param {*} config
+ * @param String svgString
+ * @param Object config
  */
 export default (svgString, cssString, config = {}) => {
   const svgNodes = convertSvg(
