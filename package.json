@@ -1,0 +1,15 @@
+{
+  "name": "react-native-svg-parser",
+  "version": "1.0.0",
+  "description": "parses SVG/XML format and converts to react-native-svg elements",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@git.target.com:ard/react-native-svg-parser.git"
+  },
+  "author": "",
+  "license": "ISC"
+}
