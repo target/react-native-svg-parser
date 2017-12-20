@@ -2,14 +2,39 @@
   "name": "react-native-svg-parser",
   "version": "1.0.0",
   "description": "parses SVG/XML format and converts to react-native-svg elements",
-  "main": "index.js",
+  "main": "lib/parser.js",
   "scripts": {
-    "test": "jest"
+    "lint": "standard",
+    "lint-fix": "standard --fix",
+    "test": "jest",
+    "build": "babel src --loose --out-dir lib --ignore *.test.js",
+    "prepublish": "npm test && npm run lint && npm run build"
   },
   "repository": {
     "type": "git",
     "url": "git@git.target.com:ard/react-native-svg-parser.git"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.0.3",
+    "babel-jest": "^21.2.0",
+    "babel-preset-react-native": "^4.0.0",
+    "jest": "^22.0.3",
+    "regenerator-runtime": "^0.11.1",
+    "standard": "^10.0.3"
+  },
+  "jest": {
+    "automock": false
+  },
+  "standard": {
+    "parser": "babel-eslint",
+    "env": [
+      "jest",
+      "es6",
+      "react-native"
+    ]
+  }
 }
