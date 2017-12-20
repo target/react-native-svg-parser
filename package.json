@@ -8,7 +8,8 @@
     "lint-fix": "standard --fix",
     "test": "jest",
     "build": "babel src --loose --out-dir lib --ignore *.test.js",
-    "prepublish": "npm test && npm run lint && npm run build"
+    "prepare": "npm test && npm run lint && npm run build",
+    "install-peers": "npm i react@16.2.0 react-native-svg@5.5.1 react-native@0.50.0"
   },
   "repository": {
     "type": "git",
@@ -16,6 +17,15 @@
   },
   "author": "",
   "license": "ISC",
+  "dependencies": {
+    "camelcase": "^4.1.0",
+    "css-parse": "^2.0.0",
+    "jest-react-native": "^18.0.0",
+    "react": "^16.2.0",
+    "react-native": "^0.51.0",
+    "react-native-svg": "^5.5.1",
+    "xmldom": "^0.1.27"
+  },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
@@ -26,8 +36,18 @@
     "regenerator-runtime": "^0.11.1",
     "standard": "^10.0.3"
   },
+  "peerDependencies": {
+    "react": "*",
+    "react-native-svg": "^5.5.1",
+    "react-native": ">=0.50.0"
+  },
   "jest": {
-    "automock": false
+    "preset": "react-native",
+    "automock": false,
+    "testPathIgnorePatterns": [
+      "node_modules",
+      "fixtures.test.js"
+    ]
   },
   "standard": {
     "parser": "babel-eslint",
