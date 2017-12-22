@@ -26,13 +26,13 @@ describe('svg-parser components', () => {
           }
         }
       })
-  
+
       expect(viewBox).toBeTruthy()
       expect(viewBox.width).toBe('94.51469159')
       expect(viewBox.height).toBe('86.29088279')
       expect(viewBox.viewBox).toBe('-4.296122345000001 24.174109004999984 94.51469159 86.29088279')
     })
-  
+
     it('should return empty object if no viewbox', () => {
       const viewBox = extractViewbox({
         attributes: {
@@ -42,7 +42,7 @@ describe('svg-parser components', () => {
           }
         }
       })
-  
+
       expect(viewBox).toEqual({})
     })
   })
@@ -51,7 +51,7 @@ describe('svg-parser components', () => {
     it('should find CSS rules for a given attribute (by ID)', () => {
       const cssAst = makeCssAst(SIMPLE_CSS)
       const rules = getCssRulesForAttr({ name: 'id', value: 'elementid1' }, cssAst.stylesheet.rules)
-  
+
       expect(rules).toBeTruthy()
       expect(rules.length).toBe(1)
       expect(rules[0].selectors[0]).toBe('#elementid1')
@@ -61,11 +61,11 @@ describe('svg-parser components', () => {
       expect(declarations[1].property).toBe('stroke')
       expect(declarations[1].value).toBe('none')
     })
-  
+
     it('should find CSS rules for a given attribute (by class)', () => {
       const cssAst = makeCssAst(SIMPLE_CSS)
       const rules = getCssRulesForAttr({ name: 'class', value: 'content' }, cssAst.stylesheet.rules)
-  
+
       expect(rules).toBeTruthy()
       expect(rules.length).toBe(1)
       expect(rules[0].selectors[0]).toBe('.content')
@@ -78,21 +78,21 @@ describe('svg-parser components', () => {
       expect(declarations[0].value).toBe("'Helvetica'")
     })
   })
-  
+
   describe('findApplicableCssProps', () => {
     it('should get a list of css properties', () => {
       const dom = parseSvg(SIMPLE_SVG)
       const cssAst = makeCssAst(SIMPLE_CSS)
-  
+
       // grabbing a node that has CSS on it:
       const svgNode = dom.documentElement
       expect(svgNode.childNodes[3].attributes.length).toBe(2)
       expect(svgNode.childNodes[3].attributes[0].name).toBe('class')
       expect(svgNode.childNodes[3].attributes[1].name).toBe('transform')
-  
+
       const contentNode = svgNode.childNodes[3]
       const cssProps = findApplicableCssProps(contentNode, { cssRules: cssAst.stylesheet.rules })
-  
+
       expect(cssProps).toBeTruthy()
       expect(cssProps.cssProps).toEqual([ 'fontFamily', 'fontSize', 'fill' ])
       expect(cssProps.attrs).toEqual([
@@ -102,12 +102,12 @@ describe('svg-parser components', () => {
       ])
     })
   })
-  
+
   describe('addNonCssAttributes', () => {
     it('should pick out attributes like "role" or "aria-hidden"', () => {
       const dom = parseSvg(SIMPLE_SVG)
       const cssAst = makeCssAst(SIMPLE_CSS)
-  
+
       // this is the "background" node, it has a "role" on it.
       const svgNode = dom.documentElement
       const backgroundNode = svgNode.childNodes[1]
@@ -115,25 +115,25 @@ describe('svg-parser components', () => {
       expect(backgroundNode.nodeName).toBe('g')
       expect(backgroundNode.attributes[0].name).toBe('id')
       expect(backgroundNode.attributes[1].name).toBe('role')
-  
+
       const cssProps = findApplicableCssProps(backgroundNode, { cssRules: cssAst.stylesheet.rules })
       expect(cssProps).toBeTruthy()
       expect(cssProps.cssProps).toEqual(['fill'])
       expect(cssProps.attrs).toEqual([
         { name: 'fill', value: '#eeeeee' }
       ])
-  
+
       const nonCssAttributes = addNonCssAttributes(backgroundNode, cssProps)
       expect(nonCssAttributes).toEqual([{ name: 'role', value: 'group' }])
     })
   })
 
   describe('converter', () => {
-    it('converter should be skipping unmapped elements', () => {
+    it('should be skipping unmapped elements', () => {
       const dom = parseSvg(SVG_WITH_UNMAPPED_ELEMENTS)
       const cssAst = makeCssAst(SIMPLE_CSS)
       const svgElement = converter(dom, cssAst)
-  
+
       expect(svgElement).toBeTruthy()
       let nodeList = []
       nodeEnumerate(svgElement, nodeList)
@@ -143,12 +143,12 @@ describe('svg-parser components', () => {
       expect(nodeList.indexOf('filter')).toBe(-1)
       expect(nodeList.indexOf('feGaussianBlur')).toBe(-1)
     })
-  
-    it('converter should skip null tag names elements (e.g. newline #text elements)', () => {
+
+    it('should skip null tag names elements (e.g. newline #text elements)', () => {
       const dom = parseSvg(SVG_WITH_UNMAPPED_ELEMENTS)
       const cssAst = makeCssAst(SIMPLE_CSS)
       const svgElement = converter(dom, cssAst)
-  
+
       const nodeNames = Object.values(dom.documentElement.childNodes).map((node) => {
         return node.nodeName
       })
@@ -157,7 +157,7 @@ describe('svg-parser components', () => {
       })
       expect(nodeNames).toEqual([ '#text', 'g', '#text', 'filter', '#text', 'g', '#text', undefined ])
       expect(tagNames).toEqual([ undefined, 'g', undefined, 'filter', undefined, 'g', undefined, undefined ])
-  
+
       expect(svgElement).toBeTruthy()
       let nodeList = []
       nodeEnumerate(svgElement, nodeList)

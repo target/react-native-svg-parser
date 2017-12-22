@@ -18,8 +18,8 @@ import converter from './converter'
  * @param Object param1
  */
 function parseSvg (svgString, opts) {
-  const markup = (new DOMParser(opts)).parseFromString(svgString, 'image/svg+xml')
-  return markup
+  return (new DOMParser(opts))
+    .parseFromString(svgString, 'image/svg+xml')
 }
 
 /**
