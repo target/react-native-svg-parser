@@ -1,0 +1,57 @@
+{
+  "name": "react-native-svg-parser",
+  "version": "1.0.3",
+  "description": "parses SVG/XML format and converts to react-native-svg elements",
+  "main": "lib/parser.js",
+  "scripts": {
+    "lint": "standard",
+    "lint-fix": "standard --fix",
+    "test": "jest --verbose --coverage",
+    "build": "rm -rf lib && babel src --out-dir lib --ignore *.test.js --source-maps",
+    "ci": "npm test && npm run lint && npm run build",
+    "install-peers": "npm i --no-save react@16.2.0 react-native-svg@6.0.0 react-native@0.50.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com/target/react-native-svg-parser.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "camelcase": "^4.1.0",
+    "css-parse-no-fs": "^2.0.0",
+    "xmldom": "^0.1.27"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.0.3",
+    "babel-jest": "^21.2.0",
+    "babel-preset-react-native": "^4.0.0",
+    "jest": "^22.0.3",
+    "regenerator-runtime": "^0.11.1",
+    "standard": "^10.0.3"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-native-svg": "^6.0.0",
+    "react-native": ">=0.50.0"
+  },
+  "jest": {
+    "preset": "react-native",
+    "automock": false,
+    "testPathIgnorePatterns": [
+      "node_modules",
+      "fixtures.test.js"
+    ]
+  },
+  "standard": {
+    "parser": "babel-eslint",
+    "env": [
+      "jest",
+      "es6",
+      "react-native"
+    ]
+  },
+  "nativePackage": true
+}
