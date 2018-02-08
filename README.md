@@ -1,8 +1,17 @@
 # react-native-svg-parser
+
+[![npm version](https://badge.fury.io/js/%40target-corp%2Freact-native-svg-parser.svg)](https://badge.fury.io/js/%40target-corp%2Freact-native-svg-parser) [![Build Status](https://travis-ci.org/target/react-native-svg-parser.svg?branch=master)](https://travis-ci.org/target/react-native-svg-parser)
+
 An SVG/XML parser that converts to react-native-svg format. This project was
 created in order to make it easy to use existing SVG files with the [react-native-svg](https://github.com/react-native-community/react-native-svg) project,
 which only supports a subset of SVG and does not provide a method for directly rendering
 SVG from an SVG/XML format file.
+
+## Installation
+
+```
+npm i @target-corp/react-native-svg-parser
+```
 
 ## Usage
 
