@@ -15,8 +15,20 @@
     "type": "git",
     "url": "git@github.com/target/react-native-svg-parser.git"
   },
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "react",
+    "react-native",
+    "react-native-svg",
+    "svg"
+  ],
+  "bugs": {
+    "url": "https://github.com/target/react-native-svg-parser/issues"
+  },
+  "author": "Aaron Decker <aaron.decker@target.com>",
+  "contributors": [
+    "Bob Schultz <robert.schultz@target.com>"
+  ],
+  "license": "MIT",
   "dependencies": {
     "camelcase": "^4.1.0",
     "css-parse-no-fs": "^2.0.0",
