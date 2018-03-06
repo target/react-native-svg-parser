@@ -63,4 +63,13 @@ describe('svg-parser main lib', () => {
     const { viewBox } = svg.props
     expect(viewBox).toBe('0 0 200 100')
   })
+
+  it('handles text elements', () => {
+    const svg = parser(SIMPLE_SVG, SIMPLE_CSS)
+    const { children } = svg.props
+    const content = children[1]
+    const lastGElement = content.props.children[3]
+    const textElement = lastGElement.props.children[0]
+    expect(textElement.props.children).toEqual('baby')
+  })
 })
