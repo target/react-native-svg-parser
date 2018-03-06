@@ -86,3 +86,10 @@ as of v6.0.0 this is changed to:
 https://github.com/react-native-community/react-native-svg/blob/master/lib/props.js#L69
 
 Therefore, the minimum version compatibility for this libaray with ```react-native-svg``` is version 6.0.0.
+
+
+## Changelog
+
+### v1.0.5
+
+Fixed text node rendering.
