@@ -1,6 +1,6 @@
 {
   "name": "@target-corp/react-native-svg-parser",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "parses SVG/XML format and converts to react-native-svg elements",
   "main": "lib/parser.js",
   "scripts": {
