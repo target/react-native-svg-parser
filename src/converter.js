@@ -169,23 +169,26 @@ function traverse (markup, config, i = 0) {
     attrs = [...attrs, ...cssPropsResult.attrs, ...additionalProps]
   }
 
-  const children = markup.childNodes.length ? Object.values(markup.childNodes).map((child) => {
-    return traverse(child, config, ++i)
-  }).filter((node) => {
-    return !!node
-  }) : []
-
   // map the tag to an element.
   const Elem = mapping[ tagName.toLowerCase() ]
-  const elemAttributes = {}
-  attrs.forEach((attr) => {
-    elemAttributes[attr.name] = attr.value
-  })
 
   // Note, if the element is not found it was not in the mapping.
   if (!Elem) {
     return null
   }
+
+  const children = (Elem === Text && markup.childNodes.length === 1)
+    ? markup.childNodes[0].data
+    : markup.childNodes.length ? Object.values(markup.childNodes).map((child) => {
+      return traverse(child, config, ++i)
+    }).filter((node) => {
+      return !!node
+    }) : []
+
+  const elemAttributes = {}
+  attrs.forEach((attr) => {
+    elemAttributes[attr.name] = attr.value
+  })
 
   const k = i + Math.random()
   return <Elem {...elemAttributes} key={k}>{ children }</Elem>
