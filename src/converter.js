@@ -2,21 +2,21 @@ import React from 'react'
 import camelCase from 'camelcase'
 
 import Svg, {
-    Circle,
-    Ellipse,
-    G,
-    LinearGradient,
-    RadialGradient,
-    Line,
-    Path,
-    Polygon,
-    Polyline,
-    Rect,
-    Symbol,
-    Text,
-    Use,
-    Defs,
-    Stop
+  Circle,
+  Ellipse,
+  G,
+  LinearGradient,
+  RadialGradient,
+  Line,
+  Path,
+  Polygon,
+  Polyline,
+  Rect,
+  Symbol,
+  Text,
+  Use,
+  Defs,
+  Stop
 } from 'react-native-svg'
 
 const mapping = {
@@ -42,7 +42,7 @@ function extractViewbox (markup) {
   const viewBox = markup.attributes
     ? Object.values(markup.attributes)
       .filter((attr) => attr.name === 'viewBox')[0]
-  : false
+    : false
 
   const vbSplits = viewBox ? viewBox.value.split(' ') : false
   if (!vbSplits) {

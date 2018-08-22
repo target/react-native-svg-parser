@@ -62,7 +62,7 @@ render() {
 
 ## Developing: Lint test and build
 
-In order to develop locally you will need to install the peer dependencies. However, we have you covered. Just run this command:
+In order to test and develop locally you will need to install the peer dependencies (React and React Native). However, we have you covered. Just run this command:
 
 ```
 npm run install-peers
