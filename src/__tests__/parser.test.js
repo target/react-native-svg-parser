@@ -1,5 +1,3 @@
-import React from 'react'
-import Svg, { Circle } from 'react-native-svg'
 import parser, { parseSvg, makeCssAst} from '../parser'
 import {SIMPLE_CSS, SIMPLE_SVG} from './fixtures.test'
 
@@ -92,14 +90,13 @@ describe('svg-parser main lib', () => {
     const circle = children[0]
 
     expect(circle.props).toEqual({
-      "children": [],
-      "cx": "50",
-      "cy": "50",
-      "fill": "red",
-      "r": "40",
-      "stroke": "black",
-      "strokeWidth": "3"
+      'children': [],
+      'cx': '50',
+      'cy': '50',
+      'fill': 'red',
+      'r': '40',
+      'stroke': 'black',
+      'strokeWidth': '3'
     })
   })
-
 })
