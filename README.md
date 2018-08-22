@@ -47,9 +47,21 @@ Example usage:
 ```
 import ReactNativeSvgParser from 'react-native-svg-parser'
 
-const svgNode = ReactNativeSvgParser(`YOUR SVG XML STRING`, `YOUR CSS STYLESHEET STRING`, {width: 111, height: 222})
+const svgString = `<svg height="100" width="100">
+  <circle cx="50" cy="50" r="40" class="red-circle" />
+</svg>
+`
+const cssString = `
+.red-circle {
+  fill: red;
+  stroke: black;
+  stroke-width: 3;
+}
+`
 
-....
+const svgNode = ReactNativeSvgParser(svgString, cssString, {width: 111, height: 222})
+
+.... // (will render a red circle with a black stroke)
 
 render() {
   return <View>
@@ -62,7 +74,7 @@ render() {
 
 ## Developing: Lint test and build
 
-In order to develop locally you will need to install the peer dependencies. However, we have you covered. Just run this command:
+In order to test and develop locally you will need to install the peer dependencies (React and React Native). However, we have you covered. Just run this command:
 
 ```
 npm run install-peers

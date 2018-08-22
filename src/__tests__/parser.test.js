@@ -72,4 +72,31 @@ describe('svg-parser main lib', () => {
     const textElement = lastGElement.props.children[0]
     expect(textElement.props.children).toEqual('baby')
   })
+
+  it('readme example works', () => {
+    const svgString = `<svg height="100" width="100">
+      <circle cx="50" cy="50" r="40" class="red-circle" />
+    </svg>
+    `
+    const cssString = `
+    .red-circle {
+      fill: red;
+      stroke: black;
+      stroke-width: 3;
+    }
+    `
+    const svgNode = parser(svgString, cssString)
+    const { children } = svgNode.props
+    const circle = children[0]
+
+    expect(circle.props).toEqual({
+      'children': [],
+      'cx': '50',
+      'cy': '50',
+      'fill': 'red',
+      'r': '40',
+      'stroke': 'black',
+      'strokeWidth': '3'
+    })
+  })
 })
