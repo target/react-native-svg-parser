@@ -1,5 +1,5 @@
 import parser, { parseSvg, makeCssAst} from '../parser'
-import {SIMPLE_CSS, SIMPLE_SVG} from './fixtures.test'
+import {SIMPLE_CSS, SIMPLE_SVG, SVG_WITH_WIDTH_AND_HEIGHT_BUT_NO_VIEWPORT} from './fixtures.test'
 
 describe('svg-parser main lib', () => {
   it('should parse css and return a set of rules', () => {
@@ -62,6 +62,13 @@ describe('svg-parser main lib', () => {
     expect(svg).toBeTruthy()
     const { viewBox } = svg.props
     expect(viewBox).toBe('0 0 200 100')
+  })
+
+  it('should format an SVG with a viewBox from the height and width of the SVG', () => {
+    const svg = parser(SVG_WITH_WIDTH_AND_HEIGHT_BUT_NO_VIEWPORT, SIMPLE_CSS)
+    expect(svg).toBeTruthy()
+    const { viewBox } = svg.props
+    expect(viewBox).toBe('0 0 240 100')
   })
 
   it('handles text elements', () => {
