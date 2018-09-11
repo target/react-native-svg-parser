@@ -22,7 +22,7 @@ describe('svg-parser main lib', () => {
     expect(dom.childNodes[2].tagName).toBe('svg')
     expect(dom.documentElement.tagName).toBe('svg')
     expect(dom.documentElement.namespaceURI).toBe('http://www.w3.org/2000/svg')
-    expect(dom.documentElement.childNodes.length).toBe(5)
+    expect(dom.documentElement.childNodes.length).toBe(9)
   })
 
   it('should return an svg in react native SVG format', () => {
@@ -71,6 +71,14 @@ describe('svg-parser main lib', () => {
     const lastGElement = content.props.children[3]
     const textElement = lastGElement.props.children[0]
     expect(textElement.props.children).toEqual('baby')
+  })
+
+  it('handles tspan elements', () => {
+    const svg = parser(SIMPLE_SVG, SIMPLE_CSS)
+    const textElement = svg.props.children[3]
+    const tspanElement = textElement.props.children[0]
+
+    expect(tspanElement.props.children).toEqual('T')
   })
 
   it('readme example works', () => {
