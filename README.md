@@ -16,7 +16,7 @@ npm i @target-corp/react-native-svg-parser
 ## Usage
 
 ```
-import ReactNativeSvgParser from 'react-native-svg-parser'
+import ReactNativeSvgParser from '@target-corp/react-native-svg-parser'
 
 const svgNode = ReactNativeSvgParser(`YOUR SVG XML STRING`, `YOUR CSS STYLESHEET STRING`)
 
@@ -45,7 +45,7 @@ The parser takes a third parameter, and object with config options. You can spec
 Example usage:
 
 ```
-import ReactNativeSvgParser from 'react-native-svg-parser'
+import ReactNativeSvgParser from '@target-corp/react-native-svg-parser'
 
 const svgString = `<svg height="100" width="100">
   <circle cx="50" cy="50" r="40" class="red-circle" />
