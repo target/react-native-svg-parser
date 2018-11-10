@@ -13,13 +13,13 @@ SVG from an SVG/XML format file.
 
 ## Installation
 
-```
+```bash
 npm i @target-corp/react-native-svg-parser
 ```
 
 ## Usage
 
-```
+```jsx
 import ReactNativeSvgParser from 'react-native-svg-parser'
 
 const svgNode = ReactNativeSvgParser(`YOUR SVG XML STRING`, `YOUR CSS STYLESHEET STRING`)
@@ -48,7 +48,7 @@ The parser takes a third parameter, and object with config options. You can spec
 
 Example usage:
 
-```
+```jsx
 import ReactNativeSvgParser from 'react-native-svg-parser'
 
 const svgString = `<svg height="100" width="100">
@@ -80,13 +80,13 @@ render() {
 
 In order to test and develop locally you will need to install the peer dependencies (React and React Native). However, we have you covered. Just run this command:
 
-```
+```bash
 npm run install-peers
 ```
 
 Then you can run test lint and build using this command:
 
-```
+```bash
 npm run ci
 ```
 
@@ -96,8 +96,8 @@ npm run ci
 
 On v5.5.1 react-native-svg enforced prop type of "object" on transform attribute. However,
 as of v6.0.0 this is changed to:
-```
-    transform: PropTypes.oneOfType([PropTypes.object, PropTypes.string])
+```jsx
+transform: PropTypes.oneOfType([PropTypes.object, PropTypes.string])
 ```
 https://github.com/react-native-community/react-native-svg/blob/master/lib/props.js#L69
 
