@@ -56,6 +56,16 @@ function extractViewbox (markup) {
   }
 }
 
+function extractWidthAndHeight (markup) {
+  let width = markup.attributes ? Object.values(markup.attributes).filter((attr) => attr.name === 'width')[0] : false
+  let height = markup.attributes ? Object.values(markup.attributes).filter((attr) => attr.name === 'height')[0] : false
+
+  width = width ? width.value.replace('px', '') : width
+  height = height ? height.value.replace('px', '') : height
+
+  return [width, height]
+}
+
 function getCssRulesForAttr (attr, cssRules) {
   let rules = []
   if (attr.name === 'id') {
@@ -149,6 +159,8 @@ function traverse (markup, config, i = 0) {
   let attrs = []
   if (tagName === 'svg') {
     const viewBox = extractViewbox(markup)
+    const [width, height] = extractWidthAndHeight(markup)
+
     attrs.push({
       name: 'width',
       value: config.width || viewBox.width
@@ -159,7 +171,7 @@ function traverse (markup, config, i = 0) {
     })
     attrs.push({
       name: 'viewBox',
-      value: config.viewBox || viewBox.viewBox || '0 0 50 50'
+      value: config.viewBox || viewBox.viewBox || `0 0 ${width || 50} ${height || 50}`
     })
   } else {
     // otherwise, if not SVG, check to see if there is CSS to apply.

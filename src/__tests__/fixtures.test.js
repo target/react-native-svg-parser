@@ -84,4 +84,12 @@ const SVG_WITH_UNMAPPED_ELEMENTS = `<?xml version="1.0" encoding="UTF-8"?>
 </svg>
 `
 
-export {SIMPLE_CSS, SIMPLE_SVG, SVG_WITH_UNMAPPED_ELEMENTS}
+const SVG_WITH_WIDTH_AND_HEIGHT_BUT_NO_VIEWPORT = `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="240px" height="100px" version="1.1" overflow="visible">
+  <g id="background" role="group" fill="#ffffff">
+    <path d="M-4.2961 24.1741 L-4.2961 110.465 L90.2186 110.465 L90.2186 24.1741 L-4.2961 24.1741 Z"/>
+  </g>
+</svg>
+`
+
+export {SIMPLE_CSS, SIMPLE_SVG, SVG_WITH_UNMAPPED_ELEMENTS, SVG_WITH_WIDTH_AND_HEIGHT_BUT_NO_VIEWPORT}
