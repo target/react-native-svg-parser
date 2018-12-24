@@ -44,6 +44,10 @@ const SIMPLE_SVG = `<?xml version="1.0" encoding="UTF-8"?>
       <text font-family="Verdana" text-anchor="middle" font-size="36">baby</text>
     </g>
   </g>
+  <g>
+    <path d="M0,57.8h85c19.1,0,19.5-13.9,19.1-17.9L97.8,0H0.1L0,57.8z" fill="red" />
+  </g>
+  <text x="52" y="28.9" dy="0.33em" text-anchor='middle' font-size="44" font-family="AkzidenzGrotesk-Black"><tspan>T</tspan></text>
 </svg>
 `
 

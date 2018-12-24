@@ -16,7 +16,8 @@ import Svg, {
   Text,
   Use,
   Defs,
-  Stop
+  Stop,
+  TSpan
 } from 'react-native-svg'
 
 const mapping = {
@@ -35,7 +36,8 @@ const mapping = {
   'radialGradient': RadialGradient,
   'use': Use,
   'defs': Defs,
-  'stop': Stop
+  'stop': Stop,
+  'tspan': TSpan
 }
 
 function extractViewbox (markup) {
@@ -170,20 +172,17 @@ function traverse (markup, config, i = 0) {
   }
 
   // map the tag to an element.
-  const Elem = mapping[ tagName.toLowerCase() ]
+  const Elem = mapping[tagName.toLowerCase()]
 
   // Note, if the element is not found it was not in the mapping.
   if (!Elem) {
     return null
   }
 
-  const children = (Elem === Text && markup.childNodes.length === 1)
-    ? markup.childNodes[0].data
-    : markup.childNodes.length ? Object.values(markup.childNodes).map((child) => {
-      return traverse(child, config, ++i)
-    }).filter((node) => {
-      return !!node
-    }) : []
+  let children = []
+  if (markup.childNodes) {
+    children = traverseChildNodes(getChildNodes(markup), config, ++i)
+  }
 
   const elemAttributes = {}
   attrs.forEach((attr) => {
@@ -191,7 +190,24 @@ function traverse (markup, config, i = 0) {
   })
 
   const k = i + Math.random()
-  return <Elem {...elemAttributes} key={k}>{ children }</Elem>
+  return <Elem {...elemAttributes} key={k}>{children}</Elem>
+}
+
+function getChildNodes (markup) {
+  return Object.keys(markup.childNodes)
+    .filter(n => n !== 'length')
+    .map(i => markup.childNodes[i])
+}
+
+function traverseChildNodes (nodes, config, i) {
+  // if there is just one node and that node have data return the data value
+  if (nodes.length === 1 && nodes[0].data) {
+    return nodes[0].data
+  }
+
+  return nodes
+    .map(child => traverse(child, config, ++i))
+    .filter(node => !!node)
 }
 
 export { extractViewbox, getCssRulesForAttr, findApplicableCssProps, addNonCssAttributes }
